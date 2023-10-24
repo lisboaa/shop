@@ -24,6 +24,6 @@ const ProductDetailsPage = async({params: {slug}}: ProductDetailsPageProps) => {
             <ProductInfo product={computeProductTotalPrice(product)}/>
         </div>
      );
-}
+};
  
 export default ProductDetailsPage;
