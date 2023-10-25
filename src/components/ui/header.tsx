@@ -9,6 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 import { Separator } from "@/components/ui/separator"
 import Link from "next/link";
+import Cart from "./cart";
 
 
 
@@ -97,10 +98,18 @@ const Header = () => {
                         <span className="text-primary">LIS </span>Store
                     </h1>
                 </Link>
+                
+                <Sheet>
+                    <SheetTrigger>
+                        <Button size="icon" variant="outline">
+                            <ShoppingCartIcon/>
+                        </Button>
+                    </SheetTrigger>
 
-                <Button size="icon" variant="outline">
-                    <ShoppingCartIcon/>
-                </Button>
+                    <SheetContent>
+                        <Cart/>
+                    </SheetContent>
+                </Sheet>
             </Card>
         </>
      );
