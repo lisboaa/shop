@@ -6,7 +6,7 @@ import Stripe from 'stripe'
 
 export const createCheckout = async (products: CartProduct[]) => {
 
-    const stripe = new Stripe("sk_test_51O5HGiB6KTaqaB4KQfupQYsSouu8vLfSBHIdKxNqIdB0eepxa37syqtpGEULEQAjQFLVKxWSsPk2YirJxnNpKleP00P7agXvUN", {
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
         apiVersion: '2023-10-16',
     })
 
@@ -27,8 +27,7 @@ export const createCheckout = async (products: CartProduct[]) => {
             },  
             quantity: product.quantity,
         })),
-    })
-    console.log(checkout);
+    });
     
     return checkout;
 }
