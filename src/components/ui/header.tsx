@@ -6,12 +6,16 @@ import { Card } from "./card";
 import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTrigger } from "./sheet";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar"
-
-
+import { AvatarFallback } from "@radix-ui/react-avatar";
 import { Separator } from "@/components/ui/separator"
+
+import { useContext } from "react";
+import { CartContext } from "@/providers/cart";
+
+import { Badge } from "./badge";
+
 import Link from "next/link";
 import Cart from "./cart";
-import { AvatarFallback } from "@radix-ui/react-avatar";
 
 
 
@@ -20,6 +24,12 @@ const Header = () => {
     
     const { status, data } = useSession();
 
+    const { products } = useContext(CartContext)
+
+    const cartQuantityItems = products.reduce((acc, product) => {
+        return acc + 1 * product.quantity;
+    }, 0);
+    
     const handlerLoginCheck = async () => {
         await signIn();
     }
@@ -75,14 +85,24 @@ const Header = () => {
                     </Button>
                     )}
 
-                    <Button variant="outline" className="w-full justify-start gap-2">
-                        <PercentIcon size={16}/>
-                        Ofertas
-                    </Button>
-                    <Button variant="outline" className="w-full justify-start gap-2">
-                        <HomeIcon size={16}/>
-                        Inicio
-                    </Button>
+                    <SheetClose asChild>
+                        <Link href="/deals">
+                            <Button variant="outline" className="w-full justify-start gap-2">
+                                <PercentIcon size={16}/>
+                                Ofertas
+                            </Button>
+                        </Link>
+                    </SheetClose>
+                    
+                    <SheetClose asChild>
+                        <Link href="/">
+                            <Button variant="outline" className="w-full justify-start gap-2">
+                                <HomeIcon size={16}/>
+                                Inicio
+                            </Button>
+                        </Link>
+                    </SheetClose>
+
                     <SheetClose asChild>
                         <Link href="/catalog">
                             <Button variant="outline" className="w-full justify-start gap-2">
@@ -102,12 +122,17 @@ const Header = () => {
             
             <Sheet>
                 <SheetTrigger asChild>
-                    <Button size="icon" variant="outline">
+                    <Button size="icon" variant="outline" className="relative">
+                    {cartQuantityItems > 0 && (
+                        <Badge className={`${cartQuantityItems >= 100 && 'px-4' } w-6 h-6 flex items-center justify-center text-xs font-bold absolute top-[calc(-1.25rem/2)] right-[calc(-1.25rem/2)]`}>
+                            {cartQuantityItems}
+                        </Badge>
+                    )}
                         <ShoppingCartIcon/>
                     </Button>
                 </SheetTrigger>
 
-                <SheetContent>
+                <SheetContent className="w-[280px]">
                     <Cart/>
                 </SheetContent>
             </Sheet>
